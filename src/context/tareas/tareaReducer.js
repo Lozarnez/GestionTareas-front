@@ -12,7 +12,7 @@ export default (state, action) => {
     case types.AGREGAR_TAREA:
       return {
         ...state,
-        tareas: [...state.tareas, action.payload],
+        tareas: [action.payload, ...state.tareas],
         errortarea: false,
       };
     case types.VALIDAR_TAREA:
@@ -20,6 +20,29 @@ export default (state, action) => {
         ...state,
         errortarea: true,
       };
+    case types.ELIMINAR_TAREA:
+      return {
+        ...state,
+        tareas: state.tareas.filter((tarea) => tarea.id !== action.payload),
+      };
+    case types.ACTUALIZAR_TAREA:
+    case types.ESTADO_TAREA:
+      return {
+        ...state,
+        tareas: state.tareas.map((tarea) =>
+          tarea.id === action.payload.id ? action.payload : tarea
+        ),
+      };
+    case types.TAREA_ACTUAL:
+      return {
+        ...state,
+        tareaseleccionada: action.payload
+      }
+    case types.LIMPIAR_TAREA:
+      return {
+        ...state,
+        tareaseleccionada: null
+      }
     default:
       return state;
   }

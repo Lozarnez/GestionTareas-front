@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import ProyectoContext from "../../context/proyectos/proyectoContext";
 import TareaContext from "../../context/tareas/tareaContext";
 
@@ -7,7 +7,21 @@ const FormTarea = () => {
   const { proyecto } = ProyectosContext;
 
   const TareasContext = useContext(TareaContext);
-  const { errortarea, agregarTarea, validarTarea, obtenerTareas } = TareasContext;
+  const {
+    errortarea,
+    tareaseleccionada,
+    agregarTarea,
+    validarTarea,
+    obtenerTareas,
+    actualizarTarea,
+    limpiarTarea,
+  } = TareasContext;
+
+  useEffect(() => {
+    tareaseleccionada !== null
+      ? setTarea(tareaseleccionada)
+      : setTarea({ nombre: "" });
+  }, [tareaseleccionada]);
 
   const [tarea, setTarea] = useState({
     nombre: "",
@@ -19,26 +33,31 @@ const FormTarea = () => {
 
   const [proyectoActual] = proyecto;
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setTarea({
       ...tarea,
       [e.target.name]: e.target.value,
     });
   };
 
-  const onSubmit = e => {
+  const onSubmit = (e) => {
     e.preventDefault();
     if (nombre.trim() === "") {
       validarTarea();
       return;
     }
-    tarea.proyectoId = proyectoActual.id;
-    tarea.estado = false;
-    agregarTarea(tarea);
+    if (tareaseleccionada === null) {
+      tarea.proyectoId = proyectoActual.id;
+      tarea.estado = false;
+      agregarTarea(tarea);
+    } else {
+      actualizarTarea(tarea);
+      limpiarTarea();
+    }
     obtenerTareas(proyectoActual.id);
     setTarea({
-      nombre: ''
-    })
+      nombre: "",
+    });
   };
 
   return (
@@ -57,7 +76,7 @@ const FormTarea = () => {
         <div className="contenedor-input">
           <input
             className="btn btn-primario btn-submit btn-block"
-            value="Agregar Tarea"
+            value={tareaseleccionada ? "Editar Tarea" : "Agregar Tarea"}
             type="submit"
           />
         </div>
