@@ -28,17 +28,22 @@ export default (state, action) => {
       return {
         ...state,
         proyecto: state.proyectos.filter(
-          (proyecto) => proyecto.id === action.payload
+          (proyecto) => proyecto._id === action.payload
         ),
       };
     case types.ELIMINAR_PROYECTO:
       return {
         ...state,
         proyectos: state.proyectos.filter(
-          (proyecto) => proyecto.id !== action.payload
+          (proyecto) => proyecto._id !== action.payload
         ),
         proyecto: null,
       };
+    case types.PROYECTO_ERROR:
+      return {
+        ...state,
+        mensaje: action.payload
+      }
     default:
       return state;
   }

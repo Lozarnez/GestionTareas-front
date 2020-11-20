@@ -5,14 +5,12 @@ export default (state, action) => {
     case types.TAREAS_PROYECTO:
       return {
         ...state,
-        tareasproyecto: state.tareas.filter(
-          (tarea) => tarea.proyectoId === action.payload
-        ),
+        tareasproyecto: action.payload,
       };
     case types.AGREGAR_TAREA:
       return {
         ...state,
-        tareas: [action.payload, ...state.tareas],
+        tareasproyecto: [action.payload, ...state.tareasproyecto],
         errortarea: false,
       };
     case types.VALIDAR_TAREA:
@@ -23,14 +21,13 @@ export default (state, action) => {
     case types.ELIMINAR_TAREA:
       return {
         ...state,
-        tareas: state.tareas.filter((tarea) => tarea.id !== action.payload),
+        tareasproyecto: state.tareasproyecto.filter((tarea) => tarea._id !== action.payload),
       };
     case types.ACTUALIZAR_TAREA:
-    case types.ESTADO_TAREA:
       return {
         ...state,
-        tareas: state.tareas.map((tarea) =>
-          tarea.id === action.payload.id ? action.payload : tarea
+        tareasproyecto: state.tareasproyecto.map((tarea) =>
+          tarea._id === action.payload._id ? action.payload : tarea
         ),
       };
     case types.TAREA_ACTUAL:

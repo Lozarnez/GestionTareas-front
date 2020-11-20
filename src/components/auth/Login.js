@@ -11,7 +11,7 @@ const Login = (props) => {
   const { mensaje, autenticado, iniciarSesion } = authContext;
 
   useEffect(() => {
-   // if (autenticado) props.history.push("/proyectos");
+   if (autenticado) props.history.push("/proyectos");
 
     if (mensaje) mostrarAlerta(mensaje.msg, "alerta-error");
   
